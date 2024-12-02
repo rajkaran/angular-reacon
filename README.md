@@ -1,59 +1,43 @@
-# SL Report
+# Angular Reacon
+Reacon is the next-generation frontend for digital menu board administration, revolutionizing the way restaurants and store owners manage their locations and content. Built as an evolution of the Samyojak project, Reacon brings cutting-edge functionality with a focus on ease of use, flexibility, and performance.
 
-## Deploy Angular app
-Deployment can occur for two different environments i.e. staging and production. In both cases Angular needs to be built for --prod as Service Worker is enabled only for production.
+With a completely redesigned interface and powerful new features, Reacon transforms complex menu management into an intuitive, streamlined process. Its robust capabilities empower non-technical users, enabling them to create, customize, and control their digital signage like never before.
 
-## Deploying for production
-Build angular for prod
-```sh
-[rajkaran@localhost lb-report]$ rm -rf public/*
-[rajkaran@localhost ng-report]$ rm -rf dist/
-[rajkaran@localhost ng-report]$ npx ng build --prod --base-href /
-[rajkaran@localhost ng-isamreportskara]$ cp -a ng-report/dist/Samskara/. lb-report/public/
-```
+## Key Innovations
+### Next-Level Designer
+The built-in designer has been developed from the ground up, inspired by Microsoft PowerPoint's simplicity and functionality. Everything is now drag-and-drop, making it accessible to anyone regardless of technical expertise. The designer includes:
 
-## Extra commands
-* Build For specific configuration
-```sh
-$ npx ng build --configuration=raj --base-href /
-$ npx ng build --configuration=staging --base-href /
-```
-* Run angular in development as it would in production
-```sh
-$ npx ng serve --host=192.168.0.25 --c=raj
-$ npm run ng build --prod --configuration=production
-```
+* Custom Animations: Seamlessly add animation effects to content.
+* Font and Color Customization: Incorporate entirely new font families and design custom color themes for brand consistency.
+* Effortless Resource Optimization: Automatically generates minimized and optimized HTML, CSS, and JavaScript files for efficient delivery.
 
-## CLI Commands
-```sh
-$ npx ng g module core --module=app.module --routing
-$ npx ng g module setting/keyValuePair --module=setting/setting.module
-$ npx ng g c core/interactMessage --module=core.module
-$ npx ng g interface core/models/authorizationMatrix model
-$ npx ng g service core/services/helper
-```
 
-## Color Scheme
-* success - 
-* primary - update table / report, add property in form, submit a form, create a new entry in collection
-* warning - edit an entry in collection
-* danger - delete entry from collection, delete property from property, deactivate / decommision 
-* secondary - cancel, close and back event
+### Advanced Communication with Drishti
+Reacon introduces a secure, real-time communication system with Drishti via WebSockets. This eliminates the need for frequent server pings, enabling:
 
-## Repeatedly used Icons for similar / same purpose
-* `add_circle` is used for adding an element in an array. such as adding a new sub form of Address in Organization.
-* `remove_circle` is used for removing an element from an array. such as removing an Address sub form from an Organization.
-* `cancel` is used to remove a chip from chip list.
-* `add` is used for create new button.
-* `edit` is used in button to allow edit of an entity.
-* `lock` is used for reset-password button
-* `supervised_user_circle` is used to indicate that a user is an admin.
-* `model_training` is used to load an item to the form on the same page for editing. such as key-value pair needs to be loaded before being edited.
-* `polyline` when building / designing / connecting multiple entities
-* `visibility` to make an item visible
-* `visibility_off` tunr off a visible item. usually comes in combination with visibility icon.
-* `diversity_2` group of entity which aren't people/user.
+* Efficient Resource Monitoring: Real-time updates over a single, secure channel.
+* Enhanced Commands: Drishti can now perform module-specific restarts without rebooting the entire device, ensuring uninterrupted operations.
 
-## Standards
-* Add typings to everything.
-* Wherever possible indicate data type of retunr from functions.
+
+### Real-Time Monitoring and Alerts
+* Modernized Dashboards: A sleek, user-friendly interface packed with advanced charts displays the real-time status of Raspberry Pi devices powering the digital boards.
+* Self-Configured Alerts: Owners can now set custom alerts for device issues like going offline, reducing dependency on support teams.
+
+
+### Streamlined Administration
+* Subscription Management: Renew subscriptions and purchase additional licenses directly within the app.
+* Built-in Invoice System: Integrated invoicing for seamless financial management.
+* Fault Tolerance: Robust logging and fault-handling mechanisms for quick issue resolution.
+
+
+## Features Designed for Owners
+Powerful Reporting: Comprehensive reporting and analytics with custom alert options.
+Dashboard Flexibility: Owners can design dashboards using pre-built or fully custom charts.
+Ease of Deployment: Minimal hand-holding required with intuitive interfaces and tools.
+
+
+## Built for the Future
+Developed in 2022, Reacon not only delivers immediate value but also sets the stage for scalable growth. With its groundbreaking features, it empowers restaurants and stores to efficiently manage digital boards, optimize their workflows, and focus on delivering exceptional customer experiences.
+
+Reacon is more than an application—it’s a game-changer for digital signage management.
+
