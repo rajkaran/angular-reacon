@@ -1,0 +1,9 @@
+<router-outlet></router-outlet>
+
+<ng-template #countingDownDialog>
+    <h2 mat-dialog-title>Inactive!</h2>
+    <p mat-dialog-content>Your session will timeout in {{countingDown}} seconds</p>
+    <mat-dialog-actions align="end">
+        <button type="button" mat-button mat-dialog-close>Continue</button>
+    </mat-dialog-actions>
+</ng-template>

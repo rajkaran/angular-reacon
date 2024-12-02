@@ -1,0 +1,38 @@
+<div class="d-flex align-items-center justify-content-center h-100">
+
+    <div class="position-absolute top-0 fw-bold" *ngIf="selectedScreen.id != ''">{{posWindowLocal.screens[selectedScreen.index].name|titlecase}}</div>
+
+    <div class="bg-light mat-elevation-z4" [style]='canvasDimension' #canvas>
+        <div class="wx-design-container position-relative" [style]='designDimension' #designContainer>
+
+            <div *ngIf="screenDetail" class="h-100 w-100" [ngStyle]="posWindowLocal.screens[selectedScreen.index].style">
+                <div *ngFor="let layer of screenDetail.layers; let i = index;" >
+
+                    <button *ngIf="layer.type === 'navLink' || layer.type === 'btn' || layer.type === 'dialogBtn'" [ngStyle]="layer.style" 
+                    [id]="layer.id" [innerHtml]="layer.content"
+                    [ngClass]="{'d-none': !layer.isActive, 'border border-primary border-2 mat-elevation-z3': selectedLayer.id == layer.id}"></button> 
+                    
+                    <div *ngIf="layer.type === 'invoiceWidget'" [ngStyle]="layer.style"  [id]="layer.id" [innerHtml]="layer.content"
+                    [ngClass]="{'d-none': !layer.isActive, 'border border-primary border-2 mat-elevation-z3': selectedLayer.id == layer.id}"></div>
+
+                    <div *ngIf="layer.type === 'statusWidget'" [ngStyle]="layer.style"  [id]="layer.id" [innerHtml]="layer.content"
+                    [ngClass]="{'d-none': !layer.isActive, 'border border-primary border-2 mat-elevation-z3': selectedLayer.id == layer.id}"></div>
+
+                    <img *ngIf="layer.type === 'image'" [ngStyle]="layer.style"  [id]="layer.id" [src]="serverUrl+'/file-downloads/'+organizationId+'/'+layer.source" 
+                    [ngClass]="{'d-none': !layer.isActive, 'border border-primary border-2 mat-elevation-z3': selectedLayer.id == layer.id}" />
+
+                    <video *ngIf="layer.type === 'video'" autoplay [ngStyle]="layer.style" [id]="layer.id" 
+                    [ngClass]="{'d-none': !layer.isActive, 'border border-primary border-2 mat-elevation-z3': selectedLayer.id == layer.id}">
+                        <source [src]="serverUrl+'/file-downloads/'+organizationId+'/'+layer.source" type="video/mp4">
+                        Sorry, your browser doesn't support embedded videos.
+                    </video>
+
+                    <div *ngIf="layer.type === 'textbox'" [ngStyle]="layer.style" [id]="layer.id" [innerHtml]="layer.content"
+                    [ngClass]="{'d-none': !layer.isActive, 'border border-primary border-2 mat-elevation-z3': selectedLayer.id == layer.id}"></div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

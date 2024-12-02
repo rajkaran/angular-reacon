@@ -1,0 +1,25 @@
+<div class="container-fluid">
+
+    <div class="row row-cols-5 row-cols-md-7 mt-3">
+        <div class="col mb-2" *ngFor="let item of menuItems; let i = index">
+            <mat-card>
+                <mat-card-title>{{item.name}}</mat-card-title>
+                
+                <div>
+                    <p><strong>alias: </strong>{{item.alias}}</p>
+                    <p><strong>department: </strong>{{item.department}}</p>
+                    <p><strong>price: </strong>{{item.price}}</p>
+                    <p><strong>description: </strong>{{item.description}}</p>
+                </div>
+
+                <mat-card-actions>
+                    <a mat-raised-button [routerLink]="['/menu/upsert', organizationId, item.id]"
+                    color="primary" title="Edit this menu item" class="ms-2 mb-2">EDIT</a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+
+    <a mat-fab color="primary" [routerLink]="['/menu/upsert', organizationId, 'none']" 
+    class="position-absolute wx-bottom-3 wx-right-3" ><mat-icon>add</mat-icon></a>
+</div>

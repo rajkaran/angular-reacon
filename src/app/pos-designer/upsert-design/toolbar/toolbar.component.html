@@ -1,0 +1,154 @@
+<div class="mat-elevation-z2 position-absolute bg-light wx-z-index" *ngIf="isToolbarVisible && posWindowLocal" cdkDragBoundary=".drag-boundary" cdkDrag>
+
+    <button mat-button class="px-1 wx-min-w-auto border-end rounded-0" title="Settings (alt+o)" (click)="onSetting()">
+        <mat-icon class="wx-mat-icon-sm">aspect_ratio</mat-icon>
+    </button>
+  
+    <button mat-button class="px-1 wx-min-w-auto rounded-0" title="Save (ctrl+s)"><mat-icon class="wx-mat-icon-sm" (click)="onSave()">save</mat-icon></button>
+  
+    <button mat-button class="px-1 wx-min-w-auto rounded-0" title="Preview (alt + q)" (click)="onPreview()"><mat-icon class="wx-mat-icon-sm">preview</mat-icon></button>
+
+    <button mat-button class="px-1 wx-min-w-auto rounded-0" title="List screens (alt+e)" 
+    (click)="isScreenListOpen = !isScreenListOpen"><mat-icon class="wx-mat-icon-sm">monitor</mat-icon></button>
+
+    <button mat-button [matMenuTriggerFor]="layerType" class="px-1 wx-min-w-auto rounded-0" title="Add Layer (alt+w)"
+    ><mat-icon class="wx-mat-icon-sm">format_shapes</mat-icon></button>
+    <mat-menu #layerType="matMenu" class="py-0">
+        <mat-action-list class="pt-0">
+            <div mat-list-item class="h-auto" *ngFor="let layerType of dropdownOptions.designerLayerType">
+                <button mat-button class="p-1 w-100 text-start rounded-0 wx-small-font" (click)="onAddNewLayer(layerType.key)">{{layerType.displayText}}</button>
+            </div>
+        </mat-action-list>
+    </mat-menu>
+
+    <button mat-button class="px-1 wx-min-w-auto rounded-0" title="Open layers list (alt+l)" 
+    (click)="isLayerListOpen = !isLayerListOpen"><mat-icon class="wx-mat-icon-sm">layers</mat-icon></button>
+
+    <button mat-button class="px-1 wx-min-w-auto rounded-0" title="Open media list (alt+m)" 
+    (click)="isMediaListOpen = !isMediaListOpen"><mat-icon class="wx-mat-icon-sm">photo_library</mat-icon></button>
+  
+    <button mat-button class="px-1 wx-min-w-auto border-start rounded-0" cdkDragHandle><mat-icon class="wx-mat-icon-sm">open_with</mat-icon></button>
+</div>
+
+
+<div class="mat-elevation-z2 position-absolute bg-light wx-z-index wx-draggable-box" *ngIf="isToolbarVisible && isScreenListOpen && posWindowLocal" 
+[ngStyle]="{'max-height.px': posWindowLocal.canvasHeight, 'width.px': posWindowLocal.canvasWidth/5}" cdkDragBoundary=".drag-boundary" cdkDrag>
+    <div class="row gx-0 d-flex align-items-center border-bottom">
+        <div class="col fw-bold text-center">Screens</div>
+
+        <div class="col-auto">
+            <button mat-button title="Add Screen" class="px-1 wx-min-w-auto border-start rounded-0" (click)="onAddScreen()">
+                <mat-icon class="wx-mat-icon-sm">add</mat-icon>
+            </button>
+
+            <button mat-button title="Close" class="px-1 wx-min-w-auto rounded-0" (click)="isScreenListOpen = false">
+                <mat-icon class="wx-mat-icon-sm">minimize</mat-icon>
+            </button>
+
+            <button mat-button title="Hold and drag around" class="px-1 wx-min-w-auto rounded-0" cdkDragHandle>
+                <mat-icon class="wx-mat-icon-sm">open_with</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="py-1">
+        <div class="row g-0" *ngFor="let screen of posWindowLocal.screens; let i = index;">
+            <button mat-button class="col px-1 text-start rounded-0 wx-small-font text-truncate" (click)="onSelectedScreen(screen.id, i)"
+            [ngClass]="{'bg-white text-secondary': selectedScreen.id == screen.id}">{{screen.name}}</button>
+
+            <button mat-button color="primary" class="col-auto px-1 wx-min-w-auto rounded-0 lh-1" title="Clone this screen" 
+            (click)="onCloneScreen(screen.id, i)"> <mat-icon class="wx-mat-icon-xs">copy_all</mat-icon> </button>
+
+            <button mat-button color="primary" class="col-auto px-0 pe-1 wx-min-w-auto rounded-0 lh-1" title="Delete this screen"
+            (click)="onDeleteScreen(screen.id, i)" [disabled]="posWindowLocal.screens.length <= 1"> <mat-icon class="wx-mat-icon-xs">remove_circle</mat-icon> </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="mat-elevation-z2 position-absolute bg-light wx-z-index wx-draggable-box mt-5" *ngIf="isToolbarVisible && isEditScreenOpen && posWindowLocal" 
+[ngStyle]="{'max-height.px': posWindowLocal.canvasHeight, 'width.px': posWindowLocal.canvasWidth/4}" cdkDragBoundary=".drag-boundary" cdkDrag>
+    <div class="row gx-0 d-flex align-items-center border-bottom">
+        <div class="col fw-bold text-center px-1 text-truncate">{{posWindowLocal.screens[selectedScreen.index].name}} Screen</div>
+
+        <div class="col-auto">
+            <button mat-button title="Close" class="px-1 wx-min-w-auto border-start rounded-0" (click)="isEditScreenOpen = false">
+                <mat-icon class="wx-mat-icon-sm">minimize</mat-icon>
+            </button>
+
+            <button mat-button title="Hold and drag around" class="px-1 wx-min-w-auto rounded-0" cdkDragHandle>
+                <mat-icon class="wx-mat-icon-sm">open_with</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <wx-screen [posScreen]="posWindowLocal.screens[selectedScreen.index]" [mediaList]="posWindowLocal.mediaListObjects || []"></wx-screen>
+</div>
+
+
+<div class="mat-elevation-z2 position-absolute bg-light wx-z-index wx-draggable-box" *ngIf="isToolbarVisible && isLayerListOpen && posWindowLocal" 
+[ngStyle]="{'max-height.px': posWindowLocal.canvasHeight, 'width.px': posWindowLocal.canvasWidth/5}" cdkDragBoundary=".drag-boundary" cdkDrag>
+    <div class="row gx-0 d-flex align-items-center border-bottom">
+        <div class="col fw-bold text-center ">Layers</div>
+
+        <div class="col-auto">
+            <button mat-button title="Add group" class="px-1 wx-min-w-auto border-start rounded-0">
+                <mat-icon class="wx-mat-icon-sm">diversity_2</mat-icon>
+            </button>
+
+            <button mat-button title="Close" class="px-1 wx-min-w-auto rounded-0" (click)="isLayerListOpen = false">
+                <mat-icon class="wx-mat-icon-sm">minimize</mat-icon>
+            </button>
+
+            <button mat-button title="Hold and drag around" class="px-1 wx-min-w-auto rounded-0" cdkDragHandle>
+                <mat-icon class="wx-mat-icon-sm">open_with</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="py-1" cdkDropList (cdkDropListDropped)="onDropLayer($event)">
+        <div class="row g-0" *ngFor="let layer of posWindowLocal.screens[selectedScreen.index].layers; let i = index;" cdkDrag>
+            <button mat-button class="col px-1 text-start rounded-0 wx-small-font text-truncate" (click)="onSelectLayer(layer.id, i)"
+            [ngClass]="{'bg-white text-secondary': selectedLayer.id == layer.id}">{{layer.name}}</button>
+
+            <button mat-button color="primary" class="col-auto px-0 wx-min-w-auto rounded-0 lh-1" *ngIf="!layer.isActive" title="Make layer visible" 
+            (click)="onToggleLayerVisibility(layer.id, i, true)"> <mat-icon class="wx-mat-icon-xs">visibility</mat-icon> </button>
+
+            <button mat-button color="primary" class="col-auto px-0 wx-min-w-auto rounded-0 lh-1" *ngIf="layer.isActive" title="Hide this layer" 
+            (click)="onToggleLayerVisibility(layer.id, i, false)"> <mat-icon class="wx-mat-icon-xs text-secondary">visibility_off</mat-icon> </button>
+
+            <button mat-button color="primary" class="col-auto px-0 ps-1 wx-min-w-auto rounded-0 lh-1" title="Clone this layer" 
+            (click)="onCloneLayer(layer.id, i)"> <mat-icon class="wx-mat-icon-xs">copy_all</mat-icon> </button>
+
+            <button mat-button color="primary" class="col-auto px-1 wx-min-w-auto rounded-0 lh-1" title="Delete this layer"
+            (click)="onDeleteLayer(layer.id, i)" [disabled]="posWindowLocal.screens[selectedScreen.index].layers.length <= 1"> 
+                <mat-icon class="wx-mat-icon-xs">remove_circle</mat-icon> 
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="mat-elevation-z2 position-absolute bg-light wx-z-index wx-draggable-box mt-5" *ngIf="isToolbarVisible && isEditLayerOpen && posWindowLocal" 
+[ngStyle]="{'max-height.px': posWindowLocal.canvasHeight, 'width.px': posWindowLocal.canvasWidth/4}" cdkDragBoundary=".drag-boundary" cdkDrag>
+    <div class="row gx-0 d-flex align-items-center border-bottom">
+        <div class="col fw-bold text-center px-1 text-truncate">{{posWindowLocal.screens[selectedScreen.index].layers[selectedLayer.index].name}} Layer</div>
+
+        <div class="col-auto">
+            <button mat-button title="Close" class="px-1 wx-min-w-auto border-start rounded-0" (click)="isEditLayerOpen = false">
+                <mat-icon class="wx-mat-icon-sm">minimize</mat-icon>
+            </button>
+
+            <button mat-button title="Hold and drag around" class="px-1 wx-min-w-auto rounded-0" cdkDragHandle>
+                <mat-icon class="wx-mat-icon-sm">open_with</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <wx-layer [layer]="posWindowLocal.screens[selectedScreen.index].layers[selectedLayer.index]" [mediaList]="posWindowLocal.mediaListObjects || []" 
+    [fieldAvailability]="fieldAvailability" [featureMethods]="featureMethods" [menuItems]="menuItems" [departments]="departments" 
+    [posScreens]="posWindowLocal.screens" [measurementUnits]="measurementUnits"></wx-layer>
+</div>
+
+<wx-media *ngIf="isToolbarVisible && isMediaListOpen && posWindowLocal" [canvasWidth]="posWindowLocal.canvasWidth" 
+[canvasHeight]="posWindowLocal.canvasHeight" [organizationId]="organizationId" [mediaList]="posWindowLocal.mediaListObjects || []"></wx-media>

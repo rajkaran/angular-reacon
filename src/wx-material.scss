@@ -1,0 +1,116 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// pick theme colors from https://material.io/design/color/the-color-system.html#tools-for-picking-colors
+$mypurple-palette: (
+    50: #f3e5f5,
+    100: #e1bee7,
+    200: #ce93d8,
+    300: #ba68c8,
+    400: #ab47bc,
+    500: #9b27b0,
+    600: #8d24aa,
+    700: #7a1fa2,
+    800: #691b9a,
+    900: #49148c,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: white,
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+    )
+);
+
+$myorange-palette: (
+    50: #fff3e0,
+    100: #ffe0b2,
+    200: #ffcd80,
+    300: #ffb84d,
+    400: #ffa826,
+    500: #ff9900,
+    600: #fb8d00,
+    700: #f57d00,
+    800: #ef6d00,
+    900: #e65200,
+    A100: #FFD180,
+    A200: #ff9800,
+    A400: #FF9100,
+    A700: #FF6D00,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: rgba(black, 0.87),
+        A200: rgba(black, 0.87),
+        A400: rgba(black, 0.87),
+        A700: white
+    )
+);
+
+$myred-palette: (
+    50: #ffebee,
+    100: #ffcdd2,
+    200: #ef9a9a,
+    300: #e57373,
+    400: #ef5350,
+    500: #f44336,
+    600: #e53935,
+    700: #d32f2f,
+    800: #c62828,
+    900: #b71b1c,
+    A100: #FF8A80,
+    A200: #FF5252,
+    A400: #FF1744,
+    A700: #D50000,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+        A100: rgba(black, 0.87),
+        A200: rgba(black, 0.87),
+        A400: rgba(black, 0.87),
+        A700: white
+    )
+);
+
+/* configure theme as https://material.io/design/color/the-color-system.html#tools-for-picking-colors */
+$my-primary: mat.define-palette($mypurple-palette, 500);
+// $my-accent: mat.define-palette(mat.$orange-palette, A200, A100, A400, A700);
+$my-accent: mat.define-palette($myorange-palette, A200, A100, A400, A700);
+
+// The "warn" palette is optional and defaults to red if not specified.
+// $my-warn: mat.define-palette($myred-palette);
+$my-warn: mat.define-palette(mat.$red-palette);
+
+$my-theme: mat.define-light-theme((
+    color: (
+        primary: $my-primary,
+        accent: $my-accent,
+        warn: $my-warn,
+    )
+));
+
+@include mat.all-component-colors($my-theme);
+@include mat.all-component-typographies($my-theme);
+@include mat.all-component-themes($my-theme);

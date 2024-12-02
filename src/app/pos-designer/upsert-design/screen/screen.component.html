@@ -1,0 +1,45 @@
+<form [formGroup]="screenForm" class="p-1">
+
+    <div class="wx-small-font fw-bold">Name</div>
+    <div class="input-group mb-2">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Name" formControlName="name" maxlength="30">
+    </div>
+
+    <div class="wx-small-font fw-bold">Background</div>
+    <div class="mb-2" formGroupName="background">
+        <div class="input-group mb-1">
+            <input type="color" class="form-control wx-small-font p-1" placeholder="Color" formControlName="background-color">
+            
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Image" [formControl]="bgImageSourceFormControl" [matAutocomplete]="bgImageSource">
+            <mat-autocomplete #bgImageSource="matAutocomplete" (optionSelected)="selectedSource($event, 'background')" [displayWith]="displayMediaFn">
+                <mat-option *ngFor="let media of filteredBackgroundImageMediaList | async" [value]="media" class="wx-small-font h-auto px-1">{{media.name}}</mat-option>
+            </mat-autocomplete>
+            <button mat-button class="mt-1 px-0 wx-min-w-auto rounded-0 lh-1 position-absolute end-0" title="Remove background image"
+            (click)="removeSource('background')"> <mat-icon class="wx-mat-icon-xs">cancel</mat-icon> </button>
+        </div>
+        <div class="input-group mb-1">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Position" formControlName="background-position">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Size" formControlName="background-size">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Repeat" formControlName="background-repeat">
+        </div>
+    </div>
+
+    <div class="row g-0">
+        <div class="col wx-small-font fw-bold">Custom Style</div>
+        <div class="col-auto">
+            <button mat-button color="primary" class="ms-1 px-0 wx-min-w-auto rounded-0 lh-1" title="Add custom style"
+            (click)="onAddCustomStyle(undefined)"> <mat-icon class="wx-mat-icon-xs">add_circle</mat-icon> </button>
+        </div>
+    </div>
+    <div class="mb-2">
+        <div class="mb-1" formArrayName="customStyle" *ngFor="let custom of customStyles.controls; let i = index;">
+            <div class="input-group mb-1" [formGroupName]="i">
+                <input type="text" class="form-control wx-small-font p-1" placeholder="CSS Property" formControlName="property">
+                <input type="text" class="form-control wx-small-font p-1" placeholder="Value" formControlName="value">
+                <button mat-button color="primary" class="ms-1 px-0 wx-min-w-auto rounded-0 lh-1" title="Remove custom style"
+                (click)="onRemoveCustomStyle(i)"> <mat-icon class="wx-mat-icon-xs">remove_circle</mat-icon> </button>
+            </div>
+        </div>
+    </div>
+    
+</form>

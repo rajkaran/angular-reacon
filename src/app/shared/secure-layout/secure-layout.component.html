@@ -1,0 +1,23 @@
+<mat-drawer-container class="wx-sidebar-container">
+    <mat-drawer #drawer [opened]="opened" class="wx-sidebar border-0 shadow-lg bg-danger" mode="side">
+        <wx-header></wx-header>
+        <div class="wx-sidebar-image"></div>
+    </mat-drawer>
+
+    <div class="h-100">
+        <div class="container-fluid pt-4">
+            <div class="row">
+                <div class="col-auto">
+                    <button type="button" mat-mini-fab color="warn" aria-label="Expand Sidebar" (click)="drawer.toggle()">
+                        <mat-icon>view_sidebar</mat-icon>
+                    </button>
+                </div>
+                <div class="col">
+                    <div class="border-bottom py-2 h5">{{pageTitle|titlecase}}</div>
+                </div>
+            </div>
+        </div>
+        
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>

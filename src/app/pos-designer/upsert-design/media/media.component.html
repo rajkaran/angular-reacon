@@ -1,0 +1,70 @@
+<div class="mat-elevation-z2 position-absolute bg-light wx-z-index wx-draggable-box"  
+[ngStyle]="{'max-height.px': canvasHeight, 'width.px': canvasWidth/5}" cdkDragBoundary=".drag-boundary" cdkDrag>
+    <div class="row gx-0 d-flex align-items-center border-bottom">
+        <div class="col fw-bold text-center ">Media Items</div>
+
+        <div class="col-auto">
+            <input type="file" id="actual-btn" [formControl]="fileUpload" (change)="onUploadMedia($event)" hidden accept="image/*, video/*"/>
+            <label mat-button title="Upload" class="btn py-0 pt-2 px-1" for="actual-btn"><mat-icon class="wx-mat-icon-sm">cloud_upload</mat-icon></label>
+
+            <button mat-button title="Close" class="px-1 wx-min-w-auto rounded-0" (click)="onCloseMediaList()">
+                <mat-icon class="wx-mat-icon-sm">minimize</mat-icon>
+            </button>
+
+            <button mat-button title="Hold and drag around" class="px-1 wx-min-w-auto rounded-0" cdkDragHandle>
+                <mat-icon class="wx-mat-icon-sm">open_with</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="py-1">
+        <div class="row g-0" *ngFor="let media of mediaList; let i = index;">
+            <button mat-button class="col px-1 text-start rounded-0 wx-small-font text-truncate" (click)="onSelectMedia(media, i)"
+            [ngClass]="{'bg-white text-secondary': selectedMediaFile.mediaObject?.id == media.id}">{{media.name|ellipse:29}}</button>
+
+            <button mat-button color="primary" class="col-auto px-0 wx-min-w-auto rounded-0 lh-1" title="Download" (click)="onDownload(media.id, media.name)"> 
+                <mat-icon class="wx-mat-icon-xs">cloud_download</mat-icon>
+            </button>
+
+            <button mat-button color="primary" class="col-auto px-0 ps-1 wx-min-w-auto rounded-0 lh-1" title="Copy URL" 
+            [cdkCopyToClipboard]="serverUrl+'/file-downloads/'+organizationId+'/'+media.id"> 
+                <mat-icon class="wx-mat-icon-xs">integration_instructions</mat-icon> 
+            </button>
+
+            <button mat-button color="primary" class="col-auto px-1 wx-min-w-auto rounded-0 lh-1" title="Remove this media" (click)="onRemove(media)"> 
+                <mat-icon class="wx-mat-icon-xs">remove_circle</mat-icon> 
+            </button>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="mat-elevation-z2 position-absolute bg-light wx-z-index wx-draggable-box" *ngIf="isMediaPreviewOpen" 
+[ngStyle]="{'max-height.px': canvasHeight, 'width.px': canvasWidth/5}" cdkDragBoundary=".drag-boundary" cdkDrag>
+    <div class="row gx-0 d-flex align-items-center border-bottom">
+        <div class="col fw-bold text-center text-truncate ps-1">{{selectedMediaFile.mediaObject?.name}}</div>
+
+        <div class="col-auto">
+            <button mat-button title="Download" class="px-1 wx-min-w-auto rounded-0" (click)="onDownload(selectedMediaFile.mediaObject?.id, selectedMediaFile.mediaObject?.name)">
+                <mat-icon class="wx-mat-icon-sm">cloud_download</mat-icon>
+            </button>
+
+            <button mat-button title="Close" class="px-1 wx-min-w-auto rounded-0" (click)="isMediaPreviewOpen = false">
+                <mat-icon class="wx-mat-icon-sm">minimize</mat-icon>
+            </button>
+
+            <button mat-button title="Hold and drag around" class="px-1 wx-min-w-auto rounded-0" cdkDragHandle>
+                <mat-icon class="wx-mat-icon-sm">open_with</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <img [src]="serverUrl+'/file-downloads/'+organizationId+'/'+selectedMediaFile.mediaObject?.id" [alt]="selectedMediaFile.mediaObject?.name" 
+    class="img-fluid" *ngIf="selectedMediaFile.mediaObject?.mediaType == 'image'">
+
+    <video controls class="w-100" *ngIf="selectedMediaFile.mediaObject?.mediaType == 'video'">
+        <source [src]="serverUrl+'/file-downloads/'+organizationId+'/'+selectedMediaFile.mediaObject?.id" [type]="selectedMediaFile.mediaObject?.details?.mimetype">
+        Your browser does not support the video preview.
+    </video>
+</div>

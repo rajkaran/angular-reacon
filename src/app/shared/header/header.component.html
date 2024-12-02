@@ -1,0 +1,42 @@
+<div class="container-fluid" >
+    <div class="row">        
+        <div class="col" style="z-index: 2;">
+
+            <div class="h1 text-light mt-3 mb-0 pb-3 border-bottom">Reacon</div>
+
+            <mat-nav-list class="pt-0 border-bottom">
+                <a mat-list-item [routerLink]="['organization/user/upsert', accessToken.organizationId, accessToken.id]" 
+                class="text-light">{{accessToken.name}}</a>
+            </mat-nav-list>
+
+            <mat-nav-list>
+                <a mat-list-item routerLink="/" class="text-light ms-2">
+                    <mat-icon class="me-2">dashboard</mat-icon><span>Dashboard</span>
+                </a>
+            </mat-nav-list>
+
+            <mat-accordion multi>
+                <mat-expansion-panel class="mat-elevation-z0" *ngFor="let matrix of linkMatrix">
+                    <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+                        <mat-panel-title class="d-flex align-items-center text-light">
+                            <mat-icon class="me-2">{{matrix.matIcon}}</mat-icon><span>{{matrix.displayText}}</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <mat-nav-list>
+                        <a mat-list-item *ngFor="let links of matrix.linkList" [routerLink]="links.routerLink" class="d-flex align-items-center text-light">
+                            <mat-icon class="me-2">{{links.matIcon}}</mat-icon><span>{{links.displayText}}</span>
+                        </a>
+                    </mat-nav-list>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <mat-nav-list class="border-top mt-2">
+                <a mat-list-item routerLink="/logout" class="text-light ms-2">
+                    <mat-icon class="me-2">logout</mat-icon><span>Logout</span>
+                </a>
+            </mat-nav-list>
+
+        </div>
+    </div>
+</div>

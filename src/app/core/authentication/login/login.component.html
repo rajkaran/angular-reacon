@@ -1,0 +1,37 @@
+<div class="container h-100">
+    <div class="row align-items-center h-100">
+        <div class="col-md-10 col-lg-6 mx-auto">
+
+            <mat-card class="bg-light pb-0 mat-elevation-z4">
+                <h1 class="align-items-center d-flex justify-content-center">
+                    <span class="display-3 font-weight-bold text-danger fw-bolder">Reacon</span>
+                </h1>
+
+                <h2 class="text-secondary text-center">LOGIN</h2>
+
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="loginForm">
+                    <mat-card-content>
+                        <mat-form-field class="w-100">
+                            <input matInput placeholder="Email" type="text" formControlName="email">
+                        </mat-form-field>
+
+                        <mat-form-field class="w-100">
+                            <input matInput placeholder="Password" [type]="fieldType" formControlName="password">
+                            <button type="button" mat-icon-button matSuffix aria-label="Make password visible" (click)="fieldType = 'text'" *ngIf="fieldType == 'password'">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                            <button type="button" mat-icon-button matSuffix aria-label="Make password visible" (click)="fieldType = 'password'" *ngIf="fieldType == 'text'">
+                                <mat-icon>visibility_off</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </mat-card-content>
+
+                    <mat-card-actions align="end">
+                        <button type="submit" mat-raised-button color="primary" [disabled]="!loginForm.valid || submitted">SUBMIT</button>
+                    </mat-card-actions>
+                </form>
+            </mat-card>
+            
+        </div>
+    </div>
+</div>

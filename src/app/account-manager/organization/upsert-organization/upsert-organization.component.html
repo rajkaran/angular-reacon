@@ -1,0 +1,466 @@
+<div class="container-fluid">
+
+    <div class="row mt-3">
+        <form class="col" [formGroup]="organizationForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-8">
+                    <mat-form-field class="w-100">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Store Name" formControlName="name">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Business Type</mat-label>
+                        <mat-select formControlName="businessType">
+                            <mat-option *ngFor="let bt of dropdownOptions.businessTypes" [value]="bt.key">{{bt.displayText}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <mat-tab-group mat-stretch-tabs class="mb-5">
+
+                <mat-tab label="HQ Address">                        
+                    <div formArrayName="address" *ngFor="let address of addresses.controls; let i = index;" class="card mat-elevation-z2 my-3">
+                        <div class="card-body" [formGroupName]="i">
+                            <div class="row row-cols-1 row-cols-md-3 pt-3">
+                                <!-- future improve:  Allow auto-fill address to be picked from a dropdown. -->
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Street Address / P.O. Box</mat-label>
+                                        <input matInput formControlName="addressLine1">
+                                    </mat-form-field>
+                                </div>
+    
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Unit # / Lot #</mat-label>
+                                        <input matInput formControlName="addressLine2">
+                                    </mat-form-field>
+                                </div>
+    
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>City</mat-label>
+                                        <input matInput formControlName="city">
+                                    </mat-form-field>
+                                </div>
+    
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Province</mat-label>
+                                        <mat-select formControlName="province">
+                                            <mat-option *ngFor="let province of dropdownOptions.provinces" [value]="province.key">{{province.displayText}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+    
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Postal Code</mat-label>
+                                        <input matInput formControlName="postalCode">
+                                    </mat-form-field>
+                                </div>
+    
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Country</mat-label>
+                                        <mat-select formControlName="country">
+                                            <mat-option *ngFor="let country of dropdownOptions.countries" [value]="country.key">{{country.displayText}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Type</mat-label>
+                                        <mat-select formControlName="addressType">
+                                            <mat-option *ngFor="let type of dropdownOptions.addressTypes" [value]="type.key">{{type.displayText}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Latitude</mat-label>
+                                        <input matInput formControlName="latitude">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Longitude</mat-label>
+                                        <input matInput formControlName="longitude">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="position-absolute top-0 end-0 w-auto">
+                                    <button type="button" mat-icon-button title="Add More Address" (click)="onAddAddress(undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                    
+                                    <button type="button" mat-icon-button title="Remove This Address" (click)="onRemoveAddress(i)" color="warn">
+                                        <mat-icon>remove_circle</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>                            
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Contacts">
+                    <div formArrayName="contact" *ngFor="let contact of contacts.controls; let i = index;" class="card mat-elevation-z2 my-3">
+                        <div class="card-body" [formGroupName]="i">
+                            <div class="row row-cols-1 row-cols-md-3 pt-3">
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Salutation</mat-label>
+                                        <mat-select formControlName="salutation">
+                                            <mat-option value="">Prefer not to disclose</mat-option>
+                                            <mat-option *ngFor="let s of dropdownOptions.salutations" [value]="s.key">{{s.displayText}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Given Name</mat-label>
+                                        <input matInput formControlName="givenName">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Family Name</mat-label>
+                                        <input matInput formControlName="familyName">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Designation</mat-label>
+                                        <input matInput formControlName="designation">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Preferred Way to Contact</mat-label>
+                                        <mat-select formControlName="preferredWay">
+                                            <mat-option *ngFor="let cw of dropdownOptions.contactWays" [value]="cw.key">{{cw.displayText}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Contact Type</mat-label>
+                                        <mat-select formControlName="type">
+                                            <mat-option *ngFor="let ct of dropdownOptions.contactTypes" [value]="ct.key">{{ct.displayText}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="position-absolute top-0 end-0 w-auto">
+                                    <button type="button" mat-icon-button title="Add More Contact" (click)="onAddContact(undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                    
+                                    <button type="button" mat-icon-button title="Remove This Contact" (click)="onRemoveContact(i)" 
+                                    color="warn"> <mat-icon>remove_circle</mat-icon> </button>
+                                </div>
+
+                            </div>
+                            
+                            <mat-form-field class="w-100">
+                                <mat-label>Emails</mat-label>
+                                <mat-chip-list #chipList multiple>
+                                    <mat-chip *ngFor="let ed of organizationForm.value.contact[i].email" selectable="true" removable="true" 
+                                    (removed)="onRemoveEmail(ed, i)">{{ed}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+
+                                    <input placeholder="Add new Email..." [matChipInputFor]="chipList" formControlName="emailInputBox" 
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true" 
+                                    (matChipInputTokenEnd)="onAddEmail($event, i)">
+                                </mat-chip-list>
+                            </mat-form-field>
+
+                            <div class="row">
+                                <div class="col fw-bold">Phone Numbers</div>
+                                <div class="col-auto pe-2">
+                                    <button type="button" mat-icon-button title="Add More Phone Numbers" (click)="onAddPhone(i, undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                </div>
+                            </div>
+                                
+                            <div formArrayName="phone" *ngFor="let ph of getPhoneNumbers(contact, 'phone'); let j = index;">
+                                <div class="row" [formGroupName]="j">
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Number</mat-label>
+                                            <input matInput formControlName="number">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Ext</mat-label>
+                                            <input matInput formControlName="ext">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <!-- future improve:  Switch number into specific format as user enters -->
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Phone Number Type</mat-label>
+                                            <mat-select formControlName="type">
+                                                <mat-option *ngFor="let pt of dropdownOptions.phoneTypes" [value]="pt.key">{{pt.displayText}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-auto text-right col-md-auto pt-2 pe-2">
+                                        <button type="button" mat-icon-button title="Remove This Phone Number" (click)="onRemovePhone(i, j)" 
+                                        color="warn"> <mat-icon>remove_circle</mat-icon> </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Operations">                        
+                    <div class="card mat-elevation-z2 my-3">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col fw-bold d-flex align-self-center">Operational Hours</div>
+                                <div class="col-auto pe-2">
+                                    <button type="button" mat-icon-button title="Add More Operation Hours" (click)="onAddOperationHour(undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                </div>
+                            </div>
+
+                            <div formArrayName="operationHour" *ngFor="let oph of operationHours.controls; let i = index;" class="">
+                                <div class="row" [formGroupName]="i">
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Day of a Week</mat-label>
+                                            <mat-select formControlName="day">
+                                                <mat-option *ngFor="let day of dropdownOptions.days" [value]="day.key">{{day.displayText}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Opening Time</mat-label>
+                                            <input matInput type="time" formControlName="openAt">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Closing Time</mat-label>
+                                            <input matInput type="time" formControlName="closeAt">
+                                        </mat-form-field>
+                                    </div>  
+                                    
+                                    <div class="col-auto text-right col-md-auto pt-2 pe-2">
+                                        <button type="button" mat-icon-button title="Remove This Operation Hour" (click)="onRemoveOperationHour(i)" 
+                                        color="warn"> <mat-icon>remove_circle</mat-icon> </button>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <div class="row">
+                                <div class="col fw-bold d-flex align-self-center">Statutory Holiday Hours</div>
+                                <div class="col-auto pe-2">
+                                    <button type="button" mat-icon-button title="Add More Statutory Holiday Hours" (click)="onAddStatutoryHolidayHour(undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                </div>
+                            </div>
+
+                            <div formArrayName="statutoryHolidayHour" *ngFor="let sph of statutoryHolidayHours.controls; let i = index;" class="">
+                                <div class="row" [formGroupName]="i">
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Statutory Day</mat-label>
+                                            <input matInput formControlName="day">
+                                            <mat-hint>Enter name of holiday</mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Opening Time</mat-label>
+                                            <input matInput type="time" formControlName="openAt">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Closing Time</mat-label>
+                                            <input matInput type="time" formControlName="closeAt">
+                                        </mat-form-field>
+                                    </div> 
+                                    
+                                    <div class="col-auto text-right col-md-auto pt-2 pe-2">
+                                        <button type="button" mat-icon-button title="Remove This Statutory Holiday Hours" 
+                                        (click)="onRemoveStatutoryHolidayHour(i)" color="warn"> <mat-icon>remove_circle</mat-icon> </button>
+                                    </div>
+                                </div> 
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card mat-elevation-z2 my-3">
+                        <div class="card-body">
+                                
+                            <div class="row">
+                                <div class="col fw-bold d-flex align-self-center">Taxes</div>
+                                <div class="col-auto pe-2">
+                                    <button type="button" mat-icon-button title="Add More Taxes" (click)="onAddTax(undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                </div>
+                            </div>
+
+                            <div formArrayName="tax" *ngFor="let tx of taxes.controls; let i = index;" class="">
+                                <div class="row" [formGroupName]="i">
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Tax</mat-label>
+                                            <mat-select formControlName="name">
+                                                <mat-option *ngFor="let tax of dropdownOptions.taxes" [value]="tax.key">{{tax.displayText}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Percent</mat-label>
+                                            <input matInput type="number" formControlName="percent">
+                                            <span matSuffix>%</span>
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                    <div class="col-auto text-right col-md-auto pt-2 pe-2">
+                                        <button type="button" mat-icon-button title="Remove This Tax" (click)="onRemoveTax(i)" 
+                                        color="warn"> <mat-icon>remove_circle</mat-icon> </button>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <div class="row">
+                                <div class="col fw-bold d-flex align-self-center">Service Charges</div>
+                                <div class="col-auto pe-2">
+                                    <button type="button" mat-icon-button title="Add More Service Charges" (click)="onAddServiceCharge(undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                </div>
+                            </div>
+
+                            <div formArrayName="serviceCharge" *ngFor="let sc of serviceCharges.controls; let i = index;" class="">
+                                <div class="row" [formGroupName]="i">
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Service Charge</mat-label>
+                                            <input matInput formControlName="name">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Percent</mat-label>
+                                            <input matInput type="number" formControlName="percent">
+                                            <span matSuffix>%</span>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Amount</mat-label>
+                                            <input matInput type="number" formControlName="amount">
+                                            <span matPrefix>$</span>
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                    <div class="col-auto text-right col-md-auto pt-2 pe-2">
+                                        <button type="button" mat-icon-button title="Remove This Service Charge" (click)="onRemoveServiceCharge(i)" 
+                                        color="warn"> <mat-icon>remove_circle</mat-icon> </button>
+                                    </div>
+                                </div> 
+                            </div>    
+                                
+                            <div class="col fw-bold text-truncate mt-2">Online Ordering</div>
+                            <div class="row" formGroupName="onlineOrder">
+                                <div class="col"> <mat-checkbox formControlName="delivery">Delivery</mat-checkbox> </div>
+                                <div class="col"> <mat-checkbox formControlName="pickup">Pick up</mat-checkbox> </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card mat-elevation-z2 my-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col fw-bold d-flex align-self-center">Online Presence</div>
+                                <div class="col-auto pe-2">
+                                    <button type="button" mat-icon-button title="Add More Social Medias" (click)="onAddSocialMedia(undefined)" 
+                                    color="primary"> <mat-icon>add_circle</mat-icon> </button>
+                                </div>
+                            </div>
+
+                            <div formArrayName="socialMedia" *ngFor="let sm of socialMedias.controls; let i = index;" class="">
+                                <div class="row" [formGroupName]="i">
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Social Media Platform</mat-label>
+                                            <mat-select formControlName="platform">
+                                                <mat-option *ngFor="let smi of dropdownOptions.socialMediaIcons" [value]="smi.key">{{smi.displayText}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Hypertext Link</mat-label>
+                                            <input matInput formControlName="url">
+                                            <span matPrefix>https://</span>
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                    <div class="col-auto text-right col-md-auto pt-2 pe-2">
+                                        <button type="button" mat-icon-button title="Remove This Social Media" (click)="onRemoveServiceCharge(i)" 
+                                        color="warn"> <mat-icon>remove_circle</mat-icon> </button>
+                                    </div>
+                                </div> 
+                            </div>
+                                
+                            <div class="row">
+                                <div class="col">
+                                    <mat-form-field class="w-100">
+                                        <mat-label>Website Link</mat-label>
+                                        <input matInput formControlName="website">
+                                        <span matPrefix>https://</span>
+                                    </mat-form-field>
+                                </div>
+                            </div>    
+                        </div>
+
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+
+            <div class="bottom-0 end-0 mb-3 me-3 position-fixed wx-z-index-1">
+                <!-- Add button to delete or deactivate an organization -->
+                <button type="submit" mat-raised-button color="primary" [disabled]="isSaving || !organizationForm.valid">SAVE ALL CHANGES</button>
+            </div>
+            
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,83 @@
+<div class="container-fluid">
+
+    <div class="row mt-3 justify-content-center">
+        <div class="col-8">
+            <form [formGroup]="authorizationMatrixForm" (ngSubmit)="onSubmit()">
+
+                <mat-form-field class="w-100" appearance="outline">
+                    <mat-label>Resource</mat-label>
+                    <input matInput placeholder="ex. User, Organization" formControlName="resource">
+                    <mat-hint>Has to be name of Loopback Model</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="w-100 mt-3" appearance="outline">
+                    <mat-label>Scopes</mat-label>
+                    <mat-chip-list #chipList multiple>
+                        <mat-chip *ngFor="let scope of authorizationMatrixForm.value.scopes" selectable="true" removable="true" 
+                        (removed)="onRemove(scope)">{{scope}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+
+                        <input placeholder="Enter Scopes..." [matChipInputFor]="chipList" [formControl]="scopeInputBox" 
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"  (matChipInputTokenEnd)="onAdd($event)">
+                    </mat-chip-list>
+                    <mat-hint>It is the name of endpoint function in loopback controller</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="w-100 mt-3" appearance="outline">
+                    <mat-label>Note</mat-label>
+                    <textarea matInput placeholder="Add Comment or Purpose of this matrix..." formControlName="note" class="wx-note-textarea"></textarea>
+                    <mat-hint>Add Comment or Purpose of the matrix</mat-hint>
+                </mat-form-field>
+                
+                <div class="row mt-3">
+                    <div class="col fw-bold d-flex align-items-center">Matrices</div>
+                    <div class="col-auto">
+                        <button type="button" mat-icon-button class="w-auto h-auto wx-line-height-inherit" (click)="addMatrix(undefined)"
+                        color="primary"><mat-icon>add_circle</mat-icon></button>
+                    </div>
+                </div>
+
+                <div formArrayName="matrix" *ngFor="let matrix of matrices.controls; let i = index;" class="row">
+                    <div class="col" [formGroupName]="i">
+                        <div class="row row-cols-sm-3">
+
+                            <div class="col">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Roles</mat-label>
+                                    <mat-select formControlName="roles" multiple>
+                                        <mat-option *ngFor="let role of dropdownOptions.roleTypes" [value]="role.key">{{role.displayText}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Organization Types</mat-label>
+                                    <mat-select formControlName="organizationTypes" multiple>
+                                        <mat-option *ngFor="let ot of dropdownOptions.organizationTypes" [value]="ot.key">{{ot.displayText}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col">
+                                <mat-form-field class="w-100">
+                                    <mat-label>Targets</mat-label>
+                                    <mat-select formControlName="targets" multiple>
+                                        <mat-option *ngFor="let target of dropdownOptions.authMatrixTarget" [value]="target.key">{{target.displayText}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <button type="button" mat-icon-button class="pt-3 w-auto h-auto wx-line-height-inherit" (click)="removeMatrix(i)"
+                        color="warn"><mat-icon>remove_circle</mat-icon></button>
+                    </div>
+                </div>
+
+                <div class="mt-3 text-end"><button mat-raised-button type="submit" color="primary" [disabled]="isSaving">SAVE ALL CHANGES</button></div>
+            </form>
+        </div>
+    </div>
+
+</div>

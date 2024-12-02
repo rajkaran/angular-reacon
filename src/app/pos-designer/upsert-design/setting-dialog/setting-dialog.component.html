@@ -1,0 +1,72 @@
+<h2 mat-dialog-title class="mb-0">Settings</h2>
+
+<mat-dialog-content class="mat-typography">
+	<p class="mb-3 text-muted"><small>Update POS name and device resolution</small></p>
+
+	<form [formGroup]="settingForm">
+
+		<div class="row">
+			<div class="col mb-2">
+                <mat-form-field class="w-100">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name">
+                </mat-form-field>
+			</div>
+
+			<div class="col mb-2">
+				<mat-form-field class="w-100">
+                    <mat-label>Alias</mat-label>
+                    <input matInput placeholder="alias" formControlName="alias">
+					<mat-hint align="start">Has to be unique</mat-hint>
+					<mat-icon class="text-success font-weight-bolder" *ngIf="f.alias.valid && f.alias?.touched" matSuffix>done</mat-icon>
+                </mat-form-field>
+			</div>
+		</div>
+
+        <div formGroupName="aspectRatio" class="row">
+			<div class="col mb-2">
+				<mat-form-field class="w-100">
+					<mat-label>Aspect Ratio - Width</mat-label>
+					<mat-select formControlName="width">
+						<mat-option *ngFor="let ar of data.dropdownOptions.aspectRatio" [value]="ar.key">{{ar.displayText}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+
+			<div class="col mb-2">
+				<mat-form-field class="w-100">
+					<mat-label>Aspect Ratio - Height</mat-label>
+					<mat-select formControlName="height">
+						<mat-option *ngFor="let ar of data.dropdownOptions.aspectRatio" [value]="ar.key">{{ar.displayText}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col mb-2">
+                <mat-form-field class="w-100">
+                    <mat-label>Canvas Width x Height</mat-label>
+                    <input type="number" min="0" matInput placeholder="width" formControlName="canvasWidth">
+					<span matSuffix>x {{settingForm.value.canvasHeight}}</span>
+                </mat-form-field>
+			</div>
+
+			<div class="col mb-2">
+                <mat-form-field class="w-100">
+                    <mat-label>Design Width x Height</mat-label>
+                    <input type="number" min="0" matInput placeholder="width" formControlName="designWidth">
+					<span matSuffix>x {{settingForm.value.designHeight}}</span>
+					<mat-hint align="start">Design Width >= Canvas Width</mat-hint>
+                </mat-form-field>
+			</div>
+		</div>
+
+	</form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+	<mat-spinner diameter="30" color="accent" class="mr-2" *ngIf="isSaving"></mat-spinner>
+	<button mat-raised-button (click)="onClose()" [disabled]="isSaving" cdkFocusInitial>CLOSE</button>
+	<button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSaving || !settingForm.valid">SAVE</button>
+</mat-dialog-actions>

@@ -1,0 +1,15 @@
+::ng-deep .mat-expansion-panel{
+    background: transparent;
+}
+
+::ng-deep .mat-expansion-indicator::after {
+    color: #f8f9fa;
+}
+
+::ng-deep .mat-expansion-panel-body{
+    padding-bottom: 0 !important;
+}
+
+::ng-deep .wx-logo .mat-list-item-content{
+    font-size: calc(1.375rem + 1.5vw);
+}

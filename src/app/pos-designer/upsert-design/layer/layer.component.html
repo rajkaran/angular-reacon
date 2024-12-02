@@ -1,0 +1,156 @@
+<form [formGroup]="layerForm" class="p-1">
+
+    <div class="wx-small-font fw-bold">Name & Text</div>
+    <div class="input-group mb-2">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Name" formControlName="name" maxlength="30">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Text" formControlName="content" *ngIf="fieldAvailability.content.indexOf(layer.type) !== -1">
+    </div>
+
+    <div class="wx-small-font fw-bold">Coordinates ({{measurementUnits.coordinate}})</div>
+    <div class="input-group mb-2" formGroupName="position">
+        <input type="number" class="form-control wx-small-font p-1" placeholder="X-Axis" formControlName="left">
+        <input type="number" class="form-control wx-small-font p-1" placeholder="Y-Axis" formControlName="top">
+    </div>
+
+    <div class="wx-small-font fw-bold">Dimensions ({{measurementUnits.dimension}})</div>
+    <div class="input-group mb-2" formGroupName="dimension">
+        <input type="number" class="form-control wx-small-font p-1" placeholder="Width" formControlName="width">
+        <input type="number" class="form-control wx-small-font p-1" placeholder="Height" formControlName="height">
+    </div>
+
+    <div class="wx-small-font fw-bold" *ngIf="fieldAvailability.screen.indexOf(layer.type) !== -1">Navigate to Screen</div>
+    <div class="input-group mb-2" *ngIf="fieldAvailability.screen.indexOf(layer.type) !== -1">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Screen" [formControl]="posScreenFormControl" [matAutocomplete]="screenSource">
+        <mat-autocomplete #screenSource="matAutocomplete" (optionSelected)="selectedSource($event, 'screen')" [displayWith]="displayMediaFn">
+            <mat-option *ngFor="let screen of filteredPosScreenList | async" [value]="screen" class="wx-small-font h-auto px-1">{{screen.name}}</mat-option>
+        </mat-autocomplete>
+        <button mat-button class="mt-1 px-0 wx-min-w-auto rounded-0 lh-1 position-absolute end-0" title="Remove screen target"
+        (click)="removeSource('screen')"> <mat-icon class="wx-mat-icon-xs">cancel</mat-icon> </button>
+    </div>
+
+    <div class="wx-small-font fw-bold" *ngIf="fieldAvailability.featureMethod.indexOf(layer.type) !== -1">Feature/Action Method</div>
+    <div class="input-group mb-2" *ngIf="fieldAvailability.featureMethod.indexOf(layer.type) !== -1">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Feature/Action Method" [formControl]="featureMethodFormControl" [matAutocomplete]="featureMethod">
+        <mat-autocomplete #featureMethod="matAutocomplete" (optionSelected)="selectedSource($event, 'feature')" [displayWith]="displayMediaFn">
+            <mat-option *ngFor="let feature of filteredFeatureMethodList | async" [value]="feature" class="wx-small-font h-auto px-1">{{feature.name}}</mat-option>
+        </mat-autocomplete>
+        <button mat-button class="mt-1 px-0 wx-min-w-auto rounded-0 lh-1 position-absolute end-0" title="Remove feature method"
+        (click)="removeSource('feature')"> <mat-icon class="wx-mat-icon-xs">cancel</mat-icon> </button>
+    </div>
+
+    <div class="wx-small-font fw-bold" *ngIf="fieldAvailability.menuItem.indexOf(layer.type) !== -1">Menu Item</div>
+    <div class="input-group mb-2" *ngIf="fieldAvailability.menuItem.indexOf(layer.type) !== -1">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Department" [formControl]="departmentFormControl" [matAutocomplete]="department">
+        <mat-autocomplete #department="matAutocomplete" (optionSelected)="selectedSource($event, 'department')">
+            <mat-option *ngFor="let department of filteredDepartmentList | async" [value]="department" class="wx-small-font h-auto px-1">{{department}}</mat-option>
+        </mat-autocomplete>
+        
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Menu Item" [formControl]="menuItemFormControl" [matAutocomplete]="menuItem">
+        <mat-autocomplete #menuItem="matAutocomplete" (optionSelected)="selectedSource($event, 'menuItem')" [displayWith]="displayMediaFn">
+            <mat-option *ngFor="let menuItem of filteredMenuItemList | async" [value]="menuItem" class="wx-small-font h-auto px-1">{{menuItem.name}}</mat-option>
+        </mat-autocomplete>
+        <button mat-button class="mt-1 px-0 wx-min-w-auto rounded-0 lh-1 position-absolute end-0" title="Remove menu item"
+        (click)="removeSource('menuItem')"> <mat-icon class="wx-mat-icon-xs">cancel</mat-icon> </button>
+    </div>
+
+    <div class="wx-small-font fw-bold" *ngIf="fieldAvailability.text.indexOf(layer.type) !== -1">Text Style</div>
+    <div class="mb-2" formGroupName="text" *ngIf="fieldAvailability.text.indexOf(layer.type) !== -1">
+        <div class="input-group mb-1">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Text Align" formControlName="text-align">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Font Size" formControlName="font-size">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Font Weight" formControlName="font-weight">
+        </div>
+        <div class="input-group mb-1">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Font Family" formControlName="font-family">
+            <input type="color" class="form-control wx-small-font p-1" placeholder="Color" formControlName="color">
+        </div>
+    </div>
+
+    <div class="wx-small-font fw-bold" *ngIf="fieldAvailability.background.indexOf(layer.type) !== -1">Background</div>
+    <div class="mb-2" formGroupName="background" *ngIf="fieldAvailability.background.indexOf(layer.type) !== -1">
+        <div class="input-group mb-1">
+            <input type="color" class="form-control wx-small-font p-1" placeholder="Color" formControlName="background-color">
+
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Image" [formControl]="bgImageSourceFormControl" [matAutocomplete]="bgImageSource">
+            <mat-autocomplete #bgImageSource="matAutocomplete" (optionSelected)="selectedSource($event, 'background')" [displayWith]="displayMediaFn">
+                <mat-option *ngFor="let media of filteredBackgroundImageMediaList | async" [value]="media" class="wx-small-font h-auto px-1">{{media.name}}</mat-option>
+            </mat-autocomplete>
+            <button mat-button class="mt-1 px-0 wx-min-w-auto rounded-0 lh-1 position-absolute end-0" title="Remove background image"
+            (click)="removeSource('background')"> <mat-icon class="wx-mat-icon-xs">cancel</mat-icon> </button>
+        </div>
+        <div class="input-group mb-1">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Position" formControlName="background-position">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Size" formControlName="background-size">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Repeat" formControlName="background-repeat">
+        </div>
+    </div>
+
+    <div class="wx-small-font fw-bold" *ngIf="layer.type === 'image'">Source</div>
+    <div class="input-group mb-2" *ngIf="layer.type === 'image'">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Source URL" [formControl]="imageSourceFormControl" [matAutocomplete]="imageSource">
+        <mat-autocomplete #imageSource="matAutocomplete" (optionSelected)="selectedSource($event, 'image')" [displayWith]="displayMediaFn">
+            <mat-option *ngFor="let media of filteredImageMediaList | async" [value]="media" class="wx-small-font h-auto px-1">{{media.name}}</mat-option>
+        </mat-autocomplete>
+        <button mat-button class="mt-1 px-0 wx-min-w-auto rounded-0 lh-1 position-absolute end-0" title="Remove image source"
+        (click)="removeSource('image')"> <mat-icon class="wx-mat-icon-xs">cancel</mat-icon> </button>
+    </div>
+
+    <div class="wx-small-font fw-bold" *ngIf="layer.type === 'video'">Source</div>
+    <div class="input-group mb-2" *ngIf="layer.type === 'video'">
+        <input type="text" class="form-control wx-small-font p-1" placeholder="Source URL" [formControl]="videoSourceFormControl" [matAutocomplete]="videoSource">
+        <mat-autocomplete #videoSource="matAutocomplete" (optionSelected)="selectedSource($event, 'video')" [displayWith]="displayMediaFn">
+            <mat-option *ngFor="let media of filteredVideoMediaList | async" [value]="media" class="wx-small-font h-auto px-1">{{media.name}}</mat-option>
+        </mat-autocomplete>
+        <button mat-button class="mt-1 px-0 wx-min-w-auto rounded-0 lh-1 position-absolute end-0" title="Remove video source"
+        (click)="removeSource('video')"> <mat-icon class="wx-mat-icon-xs">cancel</mat-icon> </button>
+    </div>
+
+    <div class="wx-small-font fw-bold">Border ({{measurementUnits.border}})</div>
+    <div class="mb-2" formGroupName="border">
+        <div class="input-group mb-1">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Width" formControlName="border-width">
+            <input type="text" class="form-control wx-small-font p-1" placeholder="Style" formControlName="border-style">
+            <input type="color" class="form-control wx-small-font p-1" placeholder="Color" formControlName="border-color">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Radius" formControlName="border-radius">
+        </div>
+    </div>
+
+    <div class="wx-small-font fw-bold">Padding ({{measurementUnits.padding}})</div>
+    <div class="mb-2" formGroupName="padding">
+        <div class="input-group mb-1">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Top" formControlName="padding-top">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Right" formControlName="padding-right">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Bottom" formControlName="padding-bottom">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Left" formControlName="padding-left">
+        </div>
+    </div>
+
+    <div class="wx-small-font fw-bold">Margin ({{measurementUnits.margin}})</div>
+    <div class="mb-2" formGroupName="margin">
+        <div class="input-group mb-1">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Top" formControlName="margin-top">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Right" formControlName="margin-right">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Bottom" formControlName="margin-bottom">
+            <input type="number" class="form-control wx-small-font p-1" placeholder="Left" formControlName="margin-left">
+        </div>
+    </div>
+
+    <div class="row g-0">
+        <div class="col wx-small-font fw-bold">Custom Style</div>
+        <div class="col-auto">
+            <button mat-button color="primary" class="ms-1 px-0 wx-min-w-auto rounded-0 lh-1" title="Add custom style"
+            (click)="onAddCustomStyle(undefined)"> <mat-icon class="wx-mat-icon-xs">add_circle</mat-icon> </button>
+        </div>
+    </div>
+    <div class="mb-2">
+        <div class="mb-1" formArrayName="customStyle" *ngFor="let custom of customStyles.controls; let i = index;">
+            <div class="input-group mb-1" [formGroupName]="i">
+                <input type="text" class="form-control wx-small-font p-1" placeholder="CSS Property" formControlName="property">
+                <input type="text" class="form-control wx-small-font p-1" placeholder="Value" formControlName="value">
+                <button mat-button color="primary" class="ms-1 px-0 wx-min-w-auto rounded-0 lh-1" title="Remove custom style"
+                (click)="onRemoveCustomStyle(i)"> <mat-icon class="wx-mat-icon-xs">remove_circle</mat-icon> </button>
+            </div>
+        </div>
+    </div>
+    
+</form>

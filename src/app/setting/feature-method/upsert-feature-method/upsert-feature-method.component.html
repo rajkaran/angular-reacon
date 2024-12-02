@@ -1,0 +1,66 @@
+<div class="container-fluid">
+
+    <div class="row justify-content-lg-center mt-3">
+        <div class="col col-lg-10 col-xxl-8">
+            <form class="row" [formGroup]="featureMethodForm" (ngSubmit)="onSubmit()" #formDirective="ngForm">
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Name" formControlName="name">
+                        <mat-hint>Human readable name</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Declaration</mat-label>
+                        <input matInput formControlName="declaration">
+                        <mat-hint>Declaration of feature method in source code</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field class="w-100">
+                        <mat-label>Description</mat-label>
+                        <input matInput formControlName="description">
+                    </mat-form-field>
+                </div>                
+
+                <div class="col col-lg-auto">
+                    <button type="submit" mat-raised-button class="mt-1" color="primary" [disabled]="!featureMethodForm.valid || isSaving">Save</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <div class="row justify-content-lg-center mt-3">
+        <div class="col col-lg-10 col-xxl-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th> <th>Key</th> <th>Display Text</th> <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let method of featureMethodList; let i = index;">
+                        <td>{{i+1}}</td>
+                        <td>{{method.name}}</td>
+                        <td>{{method.declaration}}</td>
+                        <td>{{method.description}}</td>
+                        <td>
+                            <mat-slide-toggle [checked]="method.isActive" color="warn" (change)="onChange($event, i)"
+                            title="Deactivate Setting" [disabled]="isEditing"></mat-slide-toggle>
+                            
+                            <button mat-icon-button (click)="onLoad(method.id || '', i)" color="accent" title="Load method to update" 
+                            class="ms-2"> <mat-icon>model_training</mat-icon> </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

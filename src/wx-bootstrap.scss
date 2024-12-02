@@ -1,0 +1,93 @@
+/* import only the necessary Bootstrap files */
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+
+/* -------begin customization-------- */
+
+$primary:   #9c27b0;
+$success:   #4caf50;
+$info:      #00bcd4;
+$warning:   #ff9800;
+$danger:    #f44336;
+
+$blue:      #2196f3;
+$indigo:    #3f51b5;
+$purple:    #9c27b0;
+$pink:      #e91e63;
+$red:       #f44336;
+$orange:    #ff9800;
+$yellow:    #ffeb3b;
+$green:     #4caf50;
+$teal:      #009688;
+$cyan:      #00bcd4;
+
+$brown:     #7B3F00;
+$olive:     #808000;
+$lion: 	    #C19A6B;
+$wine:      #900020;
+$taupe:     #483C32;
+$cherry:    #DE3163;
+$lime:      #BFFF00;
+$amber:     #ffd740;
+
+/* change the primary theme color, and add a new theme color */
+$theme-colors: (
+    "primary":  $primary,
+    "success":  $success,
+    "info":     $info,
+    "warning":  $warning,
+    "danger":   $danger,
+    "light":    $light,
+    "dark":     $dark,
+    "secondary":$secondary,
+    "white":    $white,
+
+    'blue':     $blue,
+    'indigo':   $indigo,
+    'purple':   $purple,
+    'pink':     $pink,
+    'red':      $red,
+    'orange':   $orange,
+    'yellow':   $yellow,
+    'green':    $green,
+    'teal':     $teal,
+    'cyan':     $cyan,
+    
+    'brown':    $brown,
+    'olive':    $olive,
+    'lion':     $lion,
+    'wine':     $wine,
+    'taupe':    $taupe,
+    'cherry':   $cherry,
+    'lime':     $lime,
+    'amber':    $amber
+);
+
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
+/* -------end customization-------- */
+
+
+/* finally, import Bootstrap to set the changes! */
+@import '~bootstrap/scss/bootstrap';
+
+
+/* Breakpoint specific border removal.
+ * Copied from https://stackoverflow.com/questions/23583713/hide-borders-on-extra-small-devices-with-bootstrap
+ */
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        .wx-m-64-#{$breakpoint}-top{ margin-top: 64px; }
+        .wx-m-56-#{$breakpoint}-top{ margin-top: 56px; }
+        .wx-m-79-#{$breakpoint}-top{ margin-top: 79px; }
+        .wx-m-71-#{$breakpoint}-top{ margin-top: 71px; }
+
+        .wx-h-#{$breakpoint}-65{ height: calc(100% - 65px); }
+        .wx-h-#{$breakpoint}-56{ height: calc(100% - 56px); }
+        .wx-h-#{$breakpoint}-73{ height: calc(100% - 73px); }
+    }
+}

@@ -1,0 +1,43 @@
+<div class="container-fluid position-relative">
+
+    <div class="row row-cols-lg-3 row-cols-xxl-4 mt-3">
+        <div class="col mb-3" *ngFor="let matrix of authorizationMatrices; let i = index">
+            <mat-card>
+                <mat-card-title>
+                    <div class="row g-0">
+                        <div class="col text-truncate d-flex align-items-center">{{matrix.resource}}</div>
+                        <div class="col-auto">
+                            <mat-slide-toggle [checked]="matrix.isActive" color="warn" (change)="onChange($event, i)" 
+                            title="Deactivate Matrix"></mat-slide-toggle>
+                            <a mat-icon-button [routerLink]="['/setting/authorizationMatrix/upsert', organizationId, matrix.id]"
+                            color="accent" title="Edit Matrix"  class="ms-2"> <mat-icon>edit</mat-icon> </a>
+                        </div>
+                    </div>
+                </mat-card-title>
+
+                <mat-card-subtitle>{{matrix.scopes.join(', ')}}</mat-card-subtitle>
+            
+                <mat-card-content>
+                    <div class="mb-3">Note: <small>{{matrix.note}}</small></div>
+                    <div class="row g-0" *ngFor="let mm of matrix.matrix">
+                        <div class="col">
+                            <div class="fw-bold">Roles</div>
+                            <ul class="mb-0"><li *ngFor="let role of mm.roles">{{findInDropDownOptions('roleTypes', role)}}</li></ul>
+                        </div>
+                        <div class="col">
+                            <div class="fw-bold">Types</div>
+                            <ul class="mb-0"><li *ngFor="let ot of mm.organizationTypes">{{findInDropDownOptions('organizationTypes', ot)}}</li></ul>
+                        </div>
+                        <div class="col">
+                            <div class="fw-bold">Targets</div>
+                            <ul class="mb-0"><li *ngFor="let target of mm.targets">{{findInDropDownOptions('authMatrixTarget', target)}}</li></ul>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    
+    <a mat-fab color="primary" [routerLink]="['/setting/authorizationMatrix/upsert', organizationId, 'none']" 
+    class="position-absolute wx-bottom-3 wx-right-3" ><mat-icon>add</mat-icon></a>
+</div>

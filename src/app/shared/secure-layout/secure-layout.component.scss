@@ -1,0 +1,25 @@
+.wx-sidebar-container {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.wx-sidebar {
+	width: 250px;
+}
+
+.wx-sidebar-image{
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    display: block;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: 50%;
+    background-image: url(../../../assets/sidebar-1.jpg) ;
+    opacity: .2;
+}

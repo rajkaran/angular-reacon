@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="row">
+        <div [ngClass]="data.action?'col-9':'col'">
+            {{data.message}}
+        </div>
+        <div class="col-3 text-right" *ngIf="data.action != undefined"
+        [ngClass]="data.action==200?'text-success':'text-danger'">
+            {{data.action}}
+        </div>
+    </div>
+</div>
